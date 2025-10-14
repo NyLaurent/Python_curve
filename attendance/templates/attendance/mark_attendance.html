@@ -1,0 +1,16 @@
+from django.utils import timezone
+from .models import Attendence
+
+def mark_attendance(request):
+    students = Student.objects.all()
+    date = timezone.now().date()
+
+    if request.method == "POST":
+        for student in students:
+        is_present= f'student_{student.id}' in request.POST
+        Attendence.objects.update_or_create(
+            student=student,
+            date=date,
+            defaults={'present': is_present}
+        )
+   
