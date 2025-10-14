@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Courses Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .card h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #eee;
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f9f9f9;
+        }
+
+        .muted {
+            color: #666;
+        }
+
+        a.button {
+            display: inline-block;
+            background: #2563eb;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        a.button:hover {
+            background: #1e40af;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Courses Dashboard</h1>
+        
+    </header>
+
+    <section class="cards">
+        <div class="card">
+            <h3>Total Courses</h3>
+            <div class="muted">{{ stats.num_courses }}</div>
+        </div>
+        <div class="card">
+            <h3>Total Enrollments</h3>
+            <div class="muted">{{ stats.num_enrollments }}</div>
+        </div>
+    </section>
+
+    <h2>Courses</h2>
+    {% if courses %}
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in courses %}
+            <tr>
+                <td>{{ c.code }}</td>
+                <td>{{ c.title }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="muted">No courses yet.</p>
+    {% endif %}
+
+    <h2 style="margin-top:24px;">Recent Enrollments</h2>
+    {% if enrollments %}
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in enrollments %}
+            <tr>
+                <td>{{ e.student.name }}</td>
+                <td>{{ e.course.code }} - {{ e.course.title }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="muted">No enrollments yet.</p>
+    {% endif %}
+
+</body>
+
+</html>
