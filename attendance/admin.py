@@ -14,3 +14,10 @@ class AttendenceAdmin(admin.ModelAdmin):
     list_display = ("date", "student", "present")
     list_filter = ("present", "date")
     search_fields = ("student__name",)
+
+
+    #Registering another way
+
+    
+    # admin.site.register(Attendence)
+    # admin.site.register(Student)

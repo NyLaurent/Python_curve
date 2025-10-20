@@ -1,16 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mark Attendance</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #f7f7f7;
+        }
+
+        .actions {
+            margin-top: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Mark Attendance for {{ date }}</h1>
+
+    <form method="POST" action="{% url 'attendance:mark_attendance' %}">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Classroom</th>
+                    <th>Present</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.classroom }}</td>
+                    <td>
+                        <input type="checkbox" name="student_{{ student.id }}" />
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <button type="submit">Save Attendance</button>
+            <a href="{% url 'attendance:attendance_list' %}">Back to list</a>
+        </div>
+    </form>
+</body>
+
+</html>
+
 from django.utils import timezone
 from .models import Attendence
 
 def mark_attendance(request):
-    students = Student.objects.all()
-    date = timezone.now().date()
+students = Student.objects.all()
+date = timezone.now().date()
 
-    if request.method == "POST":
-        for student in students:
-        is_present= f'student_{student.id}' in request.POST
-        Attendence.objects.update_or_create(
-            student=student,
-            date=date,
-            defaults={'present': is_present}
-        )
-   
+if request.method == "POST":
+for student in students:
+is_present= f'student_{student.id}' in request.POST
+Attendence.objects.update_or_create(
+student=student,
+date=date,
+defaults={'present': is_present}
+)

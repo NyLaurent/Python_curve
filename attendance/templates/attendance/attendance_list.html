@@ -1,1 +1,44 @@
-her
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Attendance Records</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <h1>Attendance Records</h1>
+
+    <p>
+        <a href="{% url 'attendance:add_student' %}">Add Student</a>
+        |
+        <a href="{% url 'attendance:mark_attendance' %}">Mark Attendance</a>
+    </p>
+
+    {% if records %}
+    <table border="1" cellspacing="0" cellpadding="8">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ record.student }}</td>
+                <td>{{ record.date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No attendance records yet.</p>
+    {% endif %}
+
+</body>
+
+</html>
