@@ -1,25 +1,188 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="utf-8" />
-    <title>Home</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 24px; }
-        .links a { display:inline-block; margin-right: 12px; background:#2563eb; color:#fff; padding:8px 12px; border-radius:6px; text-decoration:none; }
-        .links a:hover { background:#1e40af; }
-        h1 { margin-bottom: 12px; }
-        p { color:#555; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
-<body>
-    <h1>Welcome</h1>
-    <p>Use the links below to navigate.</p>
-    <div class="links">
-        <a href="/courses/">Courses Dashboard</a>
-        <a href="/attendance/">Attendance</a>
-        <a href="/admin/">Admin</a>
+
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-mortarboard"></i> Student Management System
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/courses/">
+                            <i class="bi bi-book"></i> Courses
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/attendance/">
+                            <i class="bi bi-calendar-check"></i> Attendance
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/">
+                            <i class="bi bi-gear"></i> Admin
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Welcome Card -->
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-gradient text-white text-center py-4"
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <h1 class="display-4 mb-3">
+                            <i class="bi bi-mortarboard"></i> Welcome to SMS
+                        </h1>
+                        <p class="lead mb-0">Student Management System - Track attendance and manage courses efficiently
+                        </p>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="row g-4">
+                            <!-- Quick Actions -->
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center p-4">
+                                        <div class="mb-3">
+                                            <i class="bi bi-people text-primary" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <h4 class="card-title">Student Management</h4>
+                                        <p class="card-text text-muted">Add new students with gender and residence
+                                            information</p>
+                                        <a href="{% url 'attendance:add_student' %}" class="btn btn-primary btn-lg">
+                                            <i class="bi bi-person-plus"></i> Add Student
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center p-4">
+                                        <div class="mb-3">
+                                            <i class="bi bi-calendar-check text-success" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <h4 class="card-title">Mark Attendance</h4>
+                                        <p class="card-text text-muted">Track daily attendance with easy checkboxes</p>
+                                        <a href="{% url 'attendance:mark_attendance' %}" class="btn btn-success btn-lg">
+                                            <i class="bi bi-calendar-check"></i> Mark Attendance
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center p-4">
+                                        <div class="mb-3">
+                                            <i class="bi bi-list-check text-info" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <h4 class="card-title">View Records</h4>
+                                        <p class="card-text text-muted">Review attendance history and student records
+                                        </p>
+                                        <a href="{% url 'attendance:attendance_list' %}" class="btn btn-info btn-lg">
+                                            <i class="bi bi-list-check"></i> View Records
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center p-4">
+                                        <div class="mb-3">
+                                            <i class="bi bi-book text-warning" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <h4 class="card-title">Course Management</h4>
+                                        <p class="card-text text-muted">Manage courses and student enrollments</p>
+                                        <a href="/courses/" class="btn btn-warning btn-lg">
+                                            <i class="bi bi-book"></i> Courses Dashboard
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Features Section -->
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <h3 class="text-center mb-4">
+                                    <i class="bi bi-star"></i> System Features
+                                </h3>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div class="d-flex align-items-center p-3 bg-light rounded">
+                                            <i class="bi bi-gender-ambiguous text-primary me-3 fs-4"></i>
+                                            <div>
+                                                <h6 class="mb-1">Gender Tracking</h6>
+                                                <small class="text-muted">Track student gender information</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex align-items-center p-3 bg-light rounded">
+                                            <i class="bi bi-house text-success me-3 fs-4"></i>
+                                            <div>
+                                                <h6 class="mb-1">Residence Status</h6>
+                                                <small class="text-muted">Monitor school vs outside residence</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex align-items-center p-3 bg-light rounded">
+                                            <i class="bi bi-graph-up text-info me-3 fs-4"></i>
+                                            <div>
+                                                <h6 class="mb-1">Analytics</h6>
+                                                <small class="text-muted">View attendance patterns and trends</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light text-center">
+                        <p class="mb-0 text-muted">
+                            <i class="bi bi-shield-check"></i> Secure and reliable student management system
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0">
+                <i class="bi bi-heart-fill text-danger"></i>
+                Student Management System - Built with Django & Bootstrap
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
-
-
