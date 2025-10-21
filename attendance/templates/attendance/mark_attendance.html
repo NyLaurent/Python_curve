@@ -1,83 +1,88 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mark Attendance</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background: #f7f7f7;
-        }
-
-        .actions {
-            margin-top: 16px;
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Mark Attendance for {{ date }}</h1>
-
-    <form method="POST" action="{% url 'attendance:mark_attendance' %}">
-        {% csrf_token %}
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Student</th>
-                    <th>Classroom</th>
-                    <th>Present</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for student in students %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ student.name }}</td>
-                    <td>{{ student.classroom }}</td>
-                    <td>
-                        <input type="checkbox" name="student_{{ student.id }}" />
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="actions">
-            <button type="submit">Save Attendance</button>
-            <a href="{% url 'attendance:attendance_list' %}">Back to list</a>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>Mark Attendance for {{ date }}</h3>
+            <div>
+                <a href="{% url 'attendance:attendance_list' %}" class="btn btn-outline-secondary btn-sm">View
+                    Records</a>
+                <a href="{% url 'attendance:add_student' %}" class="btn btn-outline-primary btn-sm">Add Student</a>
+            </div>
         </div>
-    </form>
+
+        {% if students %}
+        <form method="POST" action="{% url 'attendance:mark_attendance' %}">
+            {% csrf_token %}
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Student</th>
+                            <th>Classroom</th>
+                            <th>Gender</th>
+                            <th>Residence</th>
+                            <th>Present</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.classroom }}</td>
+                            <td>{{ student.get_gender_display }}</td>
+                            <td>{{ student.get_residence_display }}</td>
+                            <td class="text-center">
+                                <input type="checkbox" name="student_{{ student.id }}" class="form-check-input">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success">Save Attendance</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="selectAll()">Select All</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="deselectAll()">Deselect All</button>
+            </div>
+        </form>
+        {% else %}
+        <div class="text-center py-5">
+            <p class="text-muted">No students found.</p>
+            <a href="{% url 'attendance:add_student' %}" class="btn btn-primary">Add Student</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript for Select All/Deselect All -->
+    <script>
+        function selectAll() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => checkbox.checked = true);
+        }
+
+        function deselectAll() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+        }
+    </script>
 </body>
 
 </html>
-
-from django.utils import timezone
-from .models import Attendence
-
-def mark_attendance(request):
-students = Student.objects.all()
-date = timezone.now().date()
-
-if request.method == "POST":
-for student in students:
-is_present= f'student_{student.id}' in request.POST
-Attendence.objects.update_or_create(
-student=student,
-date=date,
-defaults={'present': is_present}
-)

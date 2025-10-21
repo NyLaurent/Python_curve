@@ -1,44 +1,68 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Records</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Attendance Records</h1>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>Attendance Records</h3>
+            <div>
+                <a href="{% url 'attendance:add_student' %}" class="btn btn-primary btn-sm">Add Student</a>
+                <a href="{% url 'attendance:mark_attendance' %}" class="btn btn-success btn-sm">Mark Attendance</a>
+            </div>
+        </div>
 
-    <p>
-        <a href="{% url 'attendance:add_student' %}">Add Student</a>
-        |
-        <a href="{% url 'attendance:mark_attendance' %}">Mark Attendance</a>
-    </p>
+        {% if records %}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Student</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            {{ record.student.name }}
+                            <br>
+                            <small class="text-muted">{{ record.student.classroom }}</small>
+                        </td>
+                        <td>{{ record.date }}</td>
+                        <td>
+                            {% if record.present %}
+                            <span class="badge bg-success">Present</span>
+                            {% else %}
+                            <span class="badge bg-danger">Absent</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <p class="text-muted">No attendance records found.</p>
+            <a href="{% url 'attendance:add_student' %}" class="btn btn-primary">Add Student</a>
+        </div>
+        {% endif %}
+    </div>
 
-    {% if records %}
-    <table border="1" cellspacing="0" cellpadding="8">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Student</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in records %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ record.student }}</td>
-                <td>{{ record.date }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p>No attendance records yet.</p>
-    {% endif %}
-
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
