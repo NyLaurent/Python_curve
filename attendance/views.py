@@ -16,7 +16,7 @@ def add_student(request):
         form = StudentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('attendance:attendance_list')
+            return redirect('attendance:mark_attendance')
         # If form is invalid, render the form again with errors
         return render(request, 'attendance/add_student.html', {'form': form})
     else:
